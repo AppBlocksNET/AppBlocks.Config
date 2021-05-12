@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>David Walker, RadicalDave</Authors>
+    <Company>AppBlocks, Grouplings, RadicalDave</Company>
+    <Copyright>AppBlocks, Grouplings, RadicalDave - Copyright 2020</Copyright>
+    <PackageProjectUrl>https://appblocks.net</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/appblocksnet/appblocks.config</RepositoryUrl>
+    <Version>0.0.0</Version>
+    <PackageTags>appblocks config</PackageTags>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>0.0.0.0</FileVersion>
+    <Description>AppBlocks.Config.Factory Helpers - AppSettings, GetConnectionString</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
