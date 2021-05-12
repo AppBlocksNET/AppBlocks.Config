@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Pack
-      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source
+      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/**.csproj
     - name: Publish
       run: dotnet nuget push src/bin/Release/*.nupkg --api-key  ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
       
