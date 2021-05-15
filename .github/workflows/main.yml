@@ -1,4 +1,4 @@
-name: main
+name: AppBlocks.Config
 
 on:
   push:
@@ -20,11 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
-    - name: Pack
-      run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/AppBlocks.Config.csproj
+      run: dotnet build --no-restore --configuration Release
+    #- name: Pack
+   #   run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/${{github.workflow}}/${{github.workflow}}.csproj
     - name: Publish
-      run: dotnet nuget push src/bin/Release/AppBlocks.Config.*.nupkg --api-key  ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/${{github.workflow}}/bin/Release/${{github.workflow}}.*.nupkg --api-key  ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
       
       
       
