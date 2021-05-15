@@ -25,6 +25,15 @@ namespace AppBlocks.Config.Tests
         }
 
         [TestMethod]
+        public void ConnectionStringAppBlocksEnvVariableTest()
+        {
+            var config = Factory.GetConfig();
+            Assert.IsFalse(config == null);
+
+            Assert.IsFalse(string.IsNullOrEmpty(config.GetConnectionString("AppBlocks")));
+        }
+
+        [TestMethod]
         public void ConnectionStringFullTest()
         {
             var config = Factory.GetConfig();

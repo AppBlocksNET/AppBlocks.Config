@@ -19,7 +19,8 @@ namespace AppBlocks.Config
         public static IConfigurationRoot GetConfig() => new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true).Build();
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+            .Build();
 
         public static string GetConnectionString(string name) => GetConnectionString(new string[] { name });
 
@@ -32,7 +33,7 @@ namespace AppBlocks.Config
         {
             var connectionStringId = args != null && args.Length > 0 ? args[0] : "AppBlocks"; //If this fails, we try DefaultConnection
             IConfigurationRoot config = GetConfig();
-            var connectionString = connectionStringId.IndexOf("=") != -1 ? connectionStringId : config.GetConnectionString(connectionStringId);
+            var connectionString = connectionStringId.IndexOf("=") != -1 ? connectionStringId : Environment.GetEnvironmentVariable($"ConnectionString__{connectionStringId}") ?? config.GetConnectionString(connectionStringId);
             //var connectionString = connectionStringId.IndexOf("=") != -1 ? connectionStringId : config.GetConnectionString(config, connectionStringId);
             ////$"Server=.\\;Database={typeof(AppBlocksDbContext).Namespace};Trusted_Connection=True;MultipleActiveResultSets=true;Application Name=AppBlocks.Web.Dev"
 
