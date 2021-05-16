@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -9,6 +8,7 @@ namespace AppBlocks.Config
 {
     public static class Factory
     {
+        public static string connectionStringPrefix = "ConnectionStrings__";
         //public static Dictionary<string, string> AppSettings => new Dictionary<string, string>(AppConfig.GetConfig().GetSection("AppBlocks").AsEnumerable());
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace AppBlocks.Config
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
             .Build();
 
-        public static string GetConnectionString(string name) => GetConnectionString(new string[] { name });
+        public static string GetConnectionString(string connectionStringId) => Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") ?? GetConnectionString(new string[] { connectionStringId });
 
         /// <summary>
         /// GetConnectionString
@@ -31,18 +31,11 @@ namespace AppBlocks.Config
         /// <returns></returns>
         public static string GetConnectionString(string[] args = null)
         {
-            var connectionStringId = args != null && args.Length > 0 ? args[0] : "AppBlocks"; //If this fails, we try DefaultConnection
+            var connectionStringId = args != null && args.Length > 0 ? args[0] : "AppBlocks";
+            if (connectionStringId.IndexOf("=") != -1) return connectionStringId;
+
             IConfigurationRoot config = GetConfig();
-            var connectionString = connectionStringId.IndexOf("=") != -1 ? connectionStringId : Environment.GetEnvironmentVariable($"ConnectionString__{connectionStringId}") ?? config.GetConnectionString(connectionStringId);
-            //var connectionString = connectionStringId.IndexOf("=") != -1 ? connectionStringId : config.GetConnectionString(config, connectionStringId);
-            ////$"Server=.\\;Database={typeof(AppBlocksDbContext).Namespace};Trusted_Connection=True;MultipleActiveResultSets=true;Application Name=AppBlocks.Web.Dev"
-
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException("ConnectionString");
-            }
-
-            return connectionString;
+            return Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") ?? config.GetConnectionString(connectionStringId);
         }
 
         /// <summary>
@@ -50,6 +43,13 @@ namespace AppBlocks.Config
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static ImmutableDictionary<string, string> AppSettings(this IConfigurationRoot config) => config.GetSection("AppBlocks").AsEnumerable().ToImmutableDictionary(x => x.Key, x => x.Value);
+        public static Dictionary<string, string> AppSettings(this IConfigurationRoot config) => config.GetSection("AppBlocks").AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
+
+        /// <summary>
+        /// AppSettings
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static string GetSetting(this IConfigurationRoot config, string key, string defaultValue) => Environment.GetEnvironmentVariable(key) ?? (config.GetSection("AppBlocks").AsEnumerable().Any(x => x.Key == key) ? config.GetSection("AppBlocks").AsEnumerable().FirstOrDefault(x => x.Key == key).Value : null) ?? defaultValue;
     }
 }

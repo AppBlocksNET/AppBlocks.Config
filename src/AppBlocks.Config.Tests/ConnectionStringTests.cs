@@ -37,10 +37,11 @@ namespace AppBlocks.Config.Tests
         public void ConnectionStringFullTest()
         {
             var config = Factory.GetConfig();
-            Assert.IsFalse(config == null);
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            //Assert.IsFalse(config == null);
+            //var connectionString = config.GetConnectionString("AppBlocksAzure");
+            var connectionString = Factory.GetConnectionString("AppBlocksAzure");
             Assert.IsFalse(string.IsNullOrEmpty(connectionString));
-            Assert.IsFalse(connectionString != Factory.GetConnectionString(connectionString), connectionString);
+            Assert.IsTrue(connectionString != config.GetConnectionString(connectionString), connectionString);
         }
     }
 }
