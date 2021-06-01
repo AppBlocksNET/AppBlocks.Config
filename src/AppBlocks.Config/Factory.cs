@@ -22,7 +22,7 @@ namespace AppBlocks.Config
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
             .Build();
 
-        public static string GetConnectionString(string connectionStringId) => Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") ?? GetConnectionString(new string[] { connectionStringId });
+        public static string GetConnectionString(string connectionStringId) => !string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}")) ? Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") : GetConnectionString(new string[] { connectionStringId });
 
         /// <summary>
         /// GetConnectionString
@@ -35,7 +35,7 @@ namespace AppBlocks.Config
             if (connectionStringId.IndexOf("=") != -1) return connectionStringId;
 
             IConfigurationRoot config = GetConfig();
-            return Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") ?? config.GetConnectionString(connectionStringId);
+            return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}")) ? Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") : config.GetConnectionString(connectionStringId);
         }
 
         /// <summary>

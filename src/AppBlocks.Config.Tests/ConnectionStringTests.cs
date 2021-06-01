@@ -9,6 +9,18 @@ namespace AppBlocks.Config.Tests
         [TestMethod]
         public void ConnectionStringDefaultTest()
         {
+            //var config = Factory.GetConfig();
+            //Assert.IsFalse(config == null);
+
+            var connectionStringDefault = Factory.GetConnectionString("ConnectionStringDefault");
+            var defaultConnection = Factory.GetConnectionString("DefaultConnection");
+            Assert.IsFalse(string.IsNullOrEmpty(defaultConnection));
+            Assert.IsTrue(defaultConnection != connectionStringDefault, $"defaultConnection:{defaultConnection} is returning connectionStringDefault:{connectionStringDefault}");
+        }
+
+        [TestMethod]
+        public void ConnectionStringDefaultConnectionTest()
+        {
             var config = Factory.GetConfig();
             Assert.IsFalse(config == null);
 
