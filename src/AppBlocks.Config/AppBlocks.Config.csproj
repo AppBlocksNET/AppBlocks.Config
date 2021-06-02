@@ -9,12 +9,12 @@
     <PackageProjectUrl>https://appblocks.net</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/appblocksnet/appblocks.config</RepositoryUrl>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <PackageTags>appblocks config</PackageTags>
-    <AssemblyVersion>0.0.4.0</AssemblyVersion>
-    <FileVersion>0.0.4.0</FileVersion>
+    <AssemblyVersion>0.0.5.0</AssemblyVersion>
+    <FileVersion>0.0.5.0</FileVersion>
     <Description>AppBlocks.Config.Factory Helpers - AppSettings, GetConnectionString</Description>
-    <PackageReleaseNotes>adjusted envvar for appstrings</PackageReleaseNotes>
+    <PackageReleaseNotes>adjusted envvar for appstrings avoid dupes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

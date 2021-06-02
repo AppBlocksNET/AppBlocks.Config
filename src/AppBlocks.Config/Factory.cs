@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AppBlocks.Config
 {
@@ -46,7 +45,7 @@ namespace AppBlocks.Config
             var results = new Dictionary<string, string>();
             foreach(DictionaryEntry envvar in envvars)
             {
-                results.Add(envvar.Key.ToString(), envvar.Value.ToString());
+                results[envvar.Key.ToString()] = envvar.Value.ToString();
             }
             return string.IsNullOrEmpty(key)
                 ? results
@@ -65,7 +64,7 @@ namespace AppBlocks.Config
             var vars = GetEnvironmentVariables();
             foreach(var v in vars)
             {
-                blocks.Add(v.Key, v.Value);
+                blocks[v.Key] = v.Value;
             }
             return blocks;// (Dictionary<string, string>).Concat(); //.Concat(Factory.GetEnvironmentVariables()))
         }
