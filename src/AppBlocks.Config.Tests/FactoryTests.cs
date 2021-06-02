@@ -25,6 +25,18 @@ namespace AppBlocks.Config.Tests
         }
 
         [TestMethod]
+        public void TestGetEnvironmentVariablesTest()
+        {
+            Assert.IsTrue(Factory.GetEnvironmentVariables().Count > 0);
+        }
+
+        [TestMethod]
+        public void TestppSetttingEnvVarTest()
+        {
+            Assert.IsTrue(Factory.GetConfig().AppSettings()["AppBlocks.TestUser"]?.Length > 0);
+        }
+
+        [TestMethod]
         public void TestSettingsGetValueOrDefaultTest()
         {
             Assert.IsTrue(!string.IsNullOrEmpty(Factory.GetConfig().AppSettings().GetValueOrDefault("AppBlocks:AppBlocks.TestSetting")), "No setting Found:AppBlocks:AppBlocks.TestSetting.");

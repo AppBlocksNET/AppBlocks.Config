@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AppBlocks.Config
 {
@@ -38,12 +40,35 @@ namespace AppBlocks.Config
             return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}")) ? Environment.GetEnvironmentVariable($"{connectionStringPrefix}{connectionStringId}") : config.GetConnectionString(connectionStringId);
         }
 
+        public static Dictionary<string, string> GetEnvironmentVariables(string key = null)
+        {
+            var envvars = Environment.GetEnvironmentVariables();
+            var results = new Dictionary<string, string>();
+            foreach(DictionaryEntry envvar in envvars)
+            {
+                results.Add(envvar.Key.ToString(), envvar.Value.ToString());
+            }
+            return string.IsNullOrEmpty(key)
+                ? results
+                : new Dictionary<string, string> { { key, Environment.GetEnvironmentVariable(key) } };
+        }
+
         /// <summary>
         /// AppSettings
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> AppSettings(this IConfigurationRoot config) => config.GetSection("AppBlocks").AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
+        public static Dictionary<string, string> AppSettings(this IConfigurationRoot config)
+        {
+            //var blocks = config.GetSection("AppBlocks").AsEnumerable();//.ToDictionary<string, string>(();
+            var blocks = config.GetSection("AppBlocks").AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
+            var vars = GetEnvironmentVariables();
+            foreach(var v in vars)
+            {
+                blocks.Add(v.Key, v.Value);
+            }
+            return blocks;// (Dictionary<string, string>).Concat(); //.Concat(Factory.GetEnvironmentVariables()))
+        }
 
         /// <summary>
         /// AppSettings
